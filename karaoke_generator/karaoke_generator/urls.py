@@ -15,8 +15,12 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
-
+from django.urls import path,include
+from . import views
 urlpatterns = [
+    path('',views.main_menu,name='main-menu'),
+    path('',views.generate,name='generate-karaoke'),
+    path('',views.view_collection,name='view-collection'),
+    path('karaoke/',include('karaoke.urls')),
     path('admin/', admin.site.urls),
 ]
