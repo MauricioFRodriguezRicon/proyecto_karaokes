@@ -18,9 +18,9 @@ from django.contrib import admin
 from django.urls import path,include
 from . import views
 urlpatterns = [
-    path('',views.main_menu,name='main-menu'),
-    path('',views.generate,name='generate-karaoke'),
-    path('',views.view_collection,name='view-collection'),
-    path('karaoke/',include('karaoke.urls')),
+    path('main-menu',views.main_menu,name='main_menu'),
+    path('generate-karaoke',views.generate_karaoke,name='generate-karaoke'),
+    #path('',views.view_collection,name='view-collection'),
+    #path('karaoke/',include('karaoke.urls')),
     path('admin/', admin.site.urls),
 ]
