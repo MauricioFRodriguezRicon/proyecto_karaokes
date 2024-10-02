@@ -8,10 +8,14 @@
     
     <h1>Generator</h1>
 
+    {% for messege in exits%}
+    <p>{{messege}}</p>
+    {% endfor %}
+    
+    <form method="POST" enctype="multipart/form-data">
     {% csrf_token %}
-
     {{ form.as_p }}
-    <button type='submit'>Generar</button>
-
+    <input type='submit' value="Generate">
+    </form>
 </body>
 </html>
