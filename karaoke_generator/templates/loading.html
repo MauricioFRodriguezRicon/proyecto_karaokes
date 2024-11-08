@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Cargando...</title>
+    <style>
+        .loading {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            font-size: 2em;
+        }
+    </style>
+    {% load static %}
+    <script type="text/javascript" src="{% static 'js/loading.js' %}"></script>
+</head>
+<body>
+    <div class="loading">
+        <p>Generando video, por favor espera...</p>
+    </div>
+</body>
+</html>

@@ -1,14 +1,33 @@
 <!DOCTYPE html>
 <html>
 <head>
+    {% load static %}
     <meta charset="UTF-8" />
     <title>Main Menu</title>
+    <link rel="stylesheet" href="{% static 'bootstrap/bootstrap.min.css' %}">
 </head>
-<body>
-    
-    <h1>Main menu</h1>
+<body class="bg-dark text-white d-flex justify-content-center align-items-center" style="height: 100vh;"> 
 
-    <a href="{% url 'generate-karaoke' %}">Generate</a>
+
+   <div class="mb-5 justify-content-center align-items-center"> 
+    <div class="container d-grid gap-2">
+        <h1> Karaoke generator</h1>
+    </div>
     
+    {% if messages %}
+        {% for message in messages %}
+                <div class="alert alert-dark" role="alert">{{ message }}</div>
+        {% endfor %}
+    {% endif %}
+
+
+    <div class="mt-5 container d-grid gap-2">
+        <a class="btn btn-light btn-lg" href="{% url 'generate-karaoke' %}" style="text-decoration:none">Generate</a>    
+    </div>
+</div>
+
+
+
+    <script src="{% static 'bootstrap/bootstrap.bundle.min.js' %}"></script>
 </body>
 </html> 

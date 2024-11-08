@@ -1,54 +1,65 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
+    
     <meta charset="UTF-8">
-    <title>Sincronizar Canción</title>
+    <title>Synchronize song</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'bootstrap/bootstrap.min.css' %}">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 </head>
-<body>
-    <h1>Sincronizar Canción</h1>
+<body class="bg-dark text-white d-flex justify-content-center align-items-center">
+    {%csrf_token%}
+    {% load static  %}
 
-    <audio id="audio" controls>
-        <source src="{{song}}">
-    </audio>
+    <div class="fixed-top">
+        <div>
+        <button id="BotonVolver" class="btn btn-dark text-white">
+          <a href="{% url 'generate-karaoke' %}" style="color:white">
+            <i class='bx bx-chevron-left'>
+              <span>Volver</span>
+            </i>
+          </a>
+        </button>
+    </div>
+    </div>   
 
-    <div id="lyrics">
-        {% for words in lyrics %}
-        <div id="sentence">
-        <span class="word"> {{words}} </span>
-        </div>
-        {% endfor %}
+<div class="mb-5 justify-content-center align-items-center"> 
+    <div class="pb-5 pt-5 container">
+        <h1>Synchronize song</h1>
     </div>
 
+    <div class="spinner-border text-light container" role="status" id="loader" style="display:none">
+        <span class="sr-only"></span>
+      </div>
 
-    <button id="synchronize" onclick="start()">Synchronize</button>
+    <div class="container" id="synchro">
+        <div class="d-flex">
+            <audio id="audio" controls>
+                <source src="{{song}}">
+            </audio>
 
-    <script>
-        let audio = document.getElementById('audio');
-        let palabras = document.querySelectorAll('.word');
-        let tiempos = [];
-        let indice = 0;
+            <div class="d-flex">
+                <button class="btn btn-light" id="synchronize" onclick="start()">Synchronize</button>
+            </div>
 
-        function start() {
-            audio.play();
-            console.log(palabras)
-            document.addEventListener('keydown', function(event) {
-                if (event.key === 'Enter') {
-                    if (indice <= palabras.lenght){
-                        let tiempoActual = audio.currentTime;
-                            tiempos.push({
-                        palabra: palabras[indice].textContent,
-                        tiempo: tiempoActual
-                    });
-                    palabras[indice].style.color = 'red'; // Marca la palabra sincronizada
-                    indice++;
-                    console.log(tiempos)
-                } else {
+        </div>
+        <div class="container pb-3 pt-3 d-flexbox" id="lyrics">
+            {% for words in lyrics %}
+            <div id="sentence">
+                <span class="word"> {{words}} </span>
+            </div>
+            {% endfor %}
+        </div>
 
-                }
-            }
-            });
+        <div class="container">
+            <form>
+            </form>
+        </div>
 
-        }
-    </script>
+        
+    </div>
+</div>
+    <script type="text/javascript" src="{% static "js/synchronize.js" %}"></script>
 </body>
 </html>

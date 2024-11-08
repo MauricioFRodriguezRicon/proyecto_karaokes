@@ -3,11 +3,31 @@
 <head>
     <meta charset="UTF-8" />
     <title>Generate Karaoke</title>
-</head>
-<body>
-    
-    <h1>Generator</h1>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'bootstrap/bootstrap.min.css' %}">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 
+</head>
+<body class="bg-dark text-white d-flex justify-content-center align-items-center" style="height: 100vh;">
+
+    <div class="fixed-top">
+        <button id="BotonVolver" class="btn btn-dark text-white">
+          <a href="{% url 'main-menu' %}" style="color:white">
+            <i class='bx bx-chevron-left'>
+              <span>Volver</span>
+            </i>
+          </a>
+        </button>
+    </div>   
+
+    <div class="mb-5 justify-content-center align-items-center"> 
+    
+    
+        <div class="p-5 container">
+            <h1>Generator</h1>
+        </div>
+    
+        <div class="p-5 container">
     {% for messege in exits%}
     <p>{{messege}}</p>
     {% endfor %}
@@ -17,5 +37,8 @@
     {{ form.as_p }}
     <input type='submit' value="Generate">
     </form>
+</div>
+</div>
+    <script src="{% static 'bootstrap/bootstrap.bundle.min.js' %}"></script>
 </body>
 </html>
