@@ -11,7 +11,9 @@ def validate_extension(value):
 
 class generate_karaoke_form(forms.Form):
     song=forms.FileField(label='Song',validators=[validate_extension])
+    image=forms.ImageField(label='Opcional background',required=False,widget=forms.ClearableFileInput(attrs={'accept':'image/**'}) )
     lyrics=forms.CharField(label='Lyrics',widget=forms.Textarea)
     song.widget.attrs.update({'accept':'.mp3,.mp4,.wma'})
     song.widget.attrs.update({'class':'container d-grid gap-2 content-align-center'})
     lyrics.widget.attrs.update({'class':'container d-grid gap-2 content-align-center'})
+    image.widget.attrs.update({'class':'container d-grid gap-2 content-align-center'})

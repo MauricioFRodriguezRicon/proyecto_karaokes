@@ -8,19 +8,18 @@ let indice = 0;
 
 
 function enviar_json(json) {
-    //const audio = document.getElementById('audio')
-    
     const csrftoken = getCookie('csrftoken');
 
     datos = {
         "musica": audio_source,
-        "lyrics": json
+        "image":image_path,
+        "lyrics": json,
     }
-    fetch('generating-karaoke', {  // Cambia la URL a la ruta que uses en Django
+    fetch('generating-karaoke', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
-            'X-CSRFToken': csrftoken  // Incluye el token CSRF
+            'X-CSRFToken': csrftoken  
         },
         body: JSON.stringify(datos) // Convierte el objeto JSON a string
     }).then(response => {
@@ -35,7 +34,7 @@ function enviar_json(json) {
 
             // Redirigir o manejar la respuesta
             if (data.status === "success") {
-                window.location.href = 'main-menu';
+                window.location.href = 'finished';
             } else {
                 console.error('Error en la respuesta:', data.message);
             }

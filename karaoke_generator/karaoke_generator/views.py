@@ -4,7 +4,7 @@ from moviepy.editor import VideoFileClip, AudioFileClip
 import os
 import json
 from manim import *
-from .procedures import split_text, process_song, verify, transform_to_strings, load_config, process_json, delete_all_media_files
+from .procedures import split_text, process_song, verify, transform_to_strings, load_config, process_json,save_image, delete_all_media_files
 from .manim_utils import create_karaoke_video as create
 from .forms import generate_karaoke_form
 from django.urls import reverse
@@ -31,21 +31,25 @@ def generate_karaoke(request):
         if form.is_valid():
             song_file = form.cleaned_data['song']
             lyrics_text = form.cleaned_data['lyrics']
+            image = form.cleaned_data['image']
+            print(image)
+            image_path=save_image(image)
+            print(image_path)
             song_path = process_song(song_file)
 
-            return synchronize(request, song_path, lyrics_text)
+            return synchronize(request, song_path, lyrics_text,image_path)
     else:
         form = generate_karaoke_form()
     return render(request, 'generate_karaoke.html', {'form': form})
 
 
-def synchronize(request, song_path, lyrics):
+def synchronize(request, song_path, lyrics,image_path):
     words = split_text(lyrics)
     list_of_lyrics = transform_to_strings(words)
-    return render(request, 'synchronize.html', {'song': song_path, 'lyrics': list_of_lyrics})
+    return render(request, 'synchronize.html', {'song': song_path, 'lyrics': list_of_lyrics,'image_path':image_path})
 
 
-def loading(request):
+def finished(request):
     delete_all_media_files()
     return redirect(main_menu)
 
@@ -55,19 +59,18 @@ def generating_karaoke(request):
         data = json.loads(request.body)
         musica = data.get('musica')
         palabras = (data.get('lyrics'))
+        image_path = data.get('image')
         lyrics = process_json(palabras)
         config = load_config()
         videos = config.get('videos')
-        print(videos)
-
-        create_karaoke_video(musica, lyrics, videos)
+        create_karaoke_video(musica, lyrics,image_path, videos)
         # Redirigir a la página de carga
         return JsonResponse({"status": "success", "message": "The video was generated successfully"})
     return JsonResponse({"status": "error", "message": "Try again"})
 
 
-def create_karaoke_video(music_path, lyrics_data, output_path):
-    create(music_path, lyrics_data, output_path)
+def create_karaoke_video(music_path, lyrics_data,image_path, output_path):
+    create(music_path, lyrics_data,image_path, output_path)
 
 
 def add_audio_to_video(video_path, audio_path, output_path):

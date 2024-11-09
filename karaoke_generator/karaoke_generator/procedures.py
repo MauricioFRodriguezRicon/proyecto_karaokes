@@ -1,6 +1,8 @@
 import os
 import tempfile
 import json
+from PIL import Image
+from io import BytesIO
 from manim import *
 from django.core.files.storage import FileSystemStorage
 from django.conf import settings
@@ -20,9 +22,7 @@ def process_song(file):
     return path
     
 def process_json(string):
-    print(string)
-    data=[]
-    print(string)
+    data=[]    
     words = string.replace('{', '')
     words = words.replace('}', '')
     words = words.replace('[', '')
@@ -41,7 +41,43 @@ def process_json(string):
 
     return data
 
+def save_image(file):
+    image_path = None
+    if file:
+
+        image = Image.open(file)
+        if image.mode != "RGBA":
+            image = image.convert("RGBA")
+
+        data = image.getdata()
+
+        new_data = []
+
+        for item in data:
+            r, g, b, a = item
+            new_data.append((r, g, b, int(a*0.5)))  # Baja la opacidad al 50%
+
+        image.putdata(new_data)
+
+        image_io = BytesIO()
+
+        image.save(image_io, format='PNG')
+
+        image_io.seek(0)
+
+        fs = FileSystemStorage(location=settings.MEDIA_ROOT)
+
+        filename = "modified_" + file.name.replace(' ', '_')
+
+        filename = fs.save(filename, image_io)
+
+        image_path = fs.url(filename)
+
+    return image_path
+
 def save_song(file):
+    
+    
     fs = FileSystemStorage(location=settings.MEDIA_ROOT)
     
     filename = fs.save(file.name.replace(' ',''), file)
@@ -86,6 +122,11 @@ def verify():
     json_folder = os.path.join(base, 'static/json')
     videos=os.path.join(json_folder,"configuration.json")
     if not(os.path.exists(videos)):
+        with open(videos,'w') as arch:
+            content={'videos':desktop}
+            json.dump(content,arch)
+    else:
+        os.unlink(videos)
         with open(videos,'w') as arch:
             content={'videos':desktop}
             json.dump(content,arch)

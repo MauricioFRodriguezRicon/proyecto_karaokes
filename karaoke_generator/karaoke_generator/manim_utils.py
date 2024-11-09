@@ -4,7 +4,7 @@ import os
 
 from moviepy.editor import AudioFileClip, VideoFileClip
 from .procedures import process_json
-from .settings import BASE_DIR
+from .settings import BASE_DIR,MEDIA_ROOT
 from shutil import move as mv
 
 
@@ -23,11 +23,7 @@ def mover_y_renombrar_archivo(ruta_actual, nuevo_nombre, ruta_destino):
     return nueva_ruta
 
 
-def create_karaoke_video(music_path,lyrics,video_outpath):
-
-    print("====================")
-    print(music_path)
-    print("====================")
+def create_karaoke_video(music_path,lyrics,image_path,video_outpath):
 
     class KaraokeScene(Scene):
         def __init__(self, audio_duration, **kwargs):
@@ -35,9 +31,12 @@ def create_karaoke_video(music_path,lyrics,video_outpath):
             self.audio_duration = audio_duration
 
         def construct(self):
-
-            #background = ImageMobject("ruta/a/tu/fondo.png").scale(2)
-            #self.add(background)
+            
+            if image_path:
+                filename = os.path.basename(image_path)
+                new_image_path = os.path.join(MEDIA_ROOT,filename)
+                background = ImageMobject(new_image_path).scale(2)
+                self.add(background)
             passed = 0
 
             for i in range(0,len(lyrics)):
@@ -93,15 +92,6 @@ def create_karaoke_video(music_path,lyrics,video_outpath):
 
 # Exporta el video final con el audio añadido
     video_with_audio.write_videofile(os.path.join(video_outpath,name), codec="libx264", audio_codec="aac",fps=24)
-
-
-
-    #video_clip = VideoFileClip(video_path).set_audio(audio_clip)
-    #video_clip.write_videofile(os.path.join(video_outpath,name), fps=24)
-
-    #os.rename(video_path,os.path.join(video_outpath,name))
-    #mv(os.path.join(video_path,name),os.path.join(video_outpath,name))
-
 
 
 
