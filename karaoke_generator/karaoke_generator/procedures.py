@@ -119,7 +119,7 @@ def audio_extract(file):
 def verify():
     desktop=os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
     base = settings.BASE_DIR
-    json_folder = os.path.join(base, 'static/json')
+    json_folder = os.path.join(base, 'static','json')
     videos=os.path.join(json_folder,"configuration.json")
     if not(os.path.exists(videos)):
         with open(videos,'w') as arch:
@@ -133,7 +133,7 @@ def verify():
 
 def act_config(new_path):
     print("Entro",new_path)
-    json_folder = os.path.join(settings.BASE_DIR, '/static/json')
+    json_folder = os.path.join(settings.BASE_DIR, 'static''json')
     videos=os.path.join(json_folder,"configuration.json")
     if os.path.exists(videos):
         with open(videos,"w") as arch:
@@ -144,7 +144,7 @@ def act_config(new_path):
 
 def load_config():
     base = settings.BASE_DIR
-    json_folder = os.path.join(base, 'static/json')
+    json_folder = os.path.join(base, 'static','json')
     videos=os.path.join(json_folder,"configuration.json")
     with open(videos) as f:
         config = json.load(f)
